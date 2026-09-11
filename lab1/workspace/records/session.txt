@@ -1,0 +1,4 @@
+INFO workspace opened
+INFO project demo-agent
+ERROR input file missing
+INFO session stopped

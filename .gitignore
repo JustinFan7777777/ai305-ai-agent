@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+
+# Model checkpoints & large artifacts
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Datasets — keep out of GitHub, note them in README instead
+data/
+datasets/

@@ -1,0 +1,6 @@
+[project]
+name = "agentslab-lab1"
+version = "0.1.0"
+description = "Lab 1: Terminal Tools, Model API, and Conversation History"
+requires-python = ">=3.11"
+dependencies = ["openai>=1.68,<3"]
