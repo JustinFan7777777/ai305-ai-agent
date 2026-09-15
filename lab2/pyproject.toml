@@ -1,0 +1,19 @@
+[project]
+name = "agentslab-lab2"
+version = "0.1.0"
+description = "Lab 2: Model Inference for Agents"
+requires-python = ">=3.11"
+dependencies = [
+    "tokenizers>=0.22,<0.23",
+    "jinja2>=3.1,<4",
+    "transformers>=4.57,<5",
+    "huggingface-hub>=0.36,<1",
+    "torch>=2.6,<3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.4,<10"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
