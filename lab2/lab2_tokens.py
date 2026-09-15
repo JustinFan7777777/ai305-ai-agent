@@ -19,7 +19,23 @@ def count_conversation(tokenizer, messages: list[dict]) -> int:
     Use tokenize=False, add_generation_prompt=False, enable_thinking=False.
     tokenizer.encode(text, add_special_tokens=False) returns a list of IDs.
     """
-    raise NotImplementedError
+
+    # count the number of tokens in the conversation
+    # by applying the chat template ad encoding the result with the tokenizer
+    text = tokenizer.apply_chat_template(
+        messages, # list of messages
+        tokenize=False, # do not tokenize the result
+        add_generation_prompt=False, # do not add generation prompt
+        enable_thinking=False, # do not enable thinking
+    )
+
+    # encode the text and count the number of token IDs
+    token_ids = tokenizer.encode(
+        text, # text to encode
+        add_special_tokens=False, # do not add special tokens
+    )
+
+    return len(token_ids) # return the number of token IDs
 
 
 def main() -> None:
