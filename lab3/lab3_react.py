@@ -30,12 +30,46 @@ def run_agent(client, model: str, task: str, max_calls: int = 6) -> dict:
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": task},
     ]
+
+    model_calls = 0 # count of model requests made
+
+    for _ in range(max_calls):
+        reply = request(
+            client,
+            messages,
+            model,
+            tool_choice="auto",
+        )
+
+        model_calls += 1
+
+        messages.append(reply)
+
+        tool_calls = reply.get("tool_calls", [])
+
+        if not tool_calls:
+            return {
+                "messages": messages,
+                "text": reply.get("content"),
+                "reason": "final",
+                "model_calls": model_calls,
+            }
+
+        for call in tool_calls:
+            messages.append(
+                {
+                    "role": "tool",
+                    "tool_call_id": call["id"],
+                    "content": dispatch(call),
+                }
+            )
+
     # TODO: Implement the loop; return early when the model answers.
     return {
-        "messages": ...,     # list[dict]: full message history, including tool results.
-        "text": ...,         # str | None: final answer, or None at the call limit.
-        "reason": ...,       # str: "final" or "max_calls".
-        "model_calls": ...,  # int: number of model requests made.
+        "messages": messages,     # list[dict]: full message history, including tool results.
+        "text": None,         # str | None: final answer, or None at the call limit.
+        "reason": "max_calls",       # str: "final" or "max_calls".
+        "model_calls": model_calls,  # int: number of model requests made.
     }
 
 

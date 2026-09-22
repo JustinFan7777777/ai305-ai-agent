@@ -34,7 +34,12 @@ def create_client() -> OpenAI:
     )
 
 
-def request(client, messages: list[dict], model: str, tool_choice="auto") -> dict:
+def request(
+    client,
+    messages: list[dict],
+    model: str,
+    tool_choice: str | dict = "auto",
+) -> dict:
     """Return an assistant message dict with role and optional content/tool_calls.
 
     Append the returned dict to messages. tool_choice="auto" allows tools or an answer;
@@ -72,7 +77,32 @@ def run_tool_round(client, model: str) -> list[dict]:
         client, messages, model,
         tool_choice={"type": "function", "function": {"name": "ticket_status"}},
     )
-    raise NotImplementedError
+
+    messages.append(first)
+
+    # 读取模型请求的所有工具调用。
+    # 这里必须使用 tool_calls；tol_calls 是拼写错误，会导致工具结果永远不会被执行。
+    for call in first.get("tool_calls", []):
+        tool_result = dispatch(call)
+
+        messages.append(
+            {
+                "role": "tool",
+                "tool_call_id": call["id"],
+                "content": tool_result,
+            }
+        )
+
+    final = request(
+        client,
+        messages,
+        model,
+        tool_choice="none",
+    )
+
+    messages.append(final)
+
+    return messages
 
 
 def main() -> None:
