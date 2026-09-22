@@ -1,0 +1,11 @@
+[[tool.uv.index]]
+name = "sustech"
+url = "https://mirrors.sustech.edu.cn/pypi/web/simple"
+default = true
+
+[project]
+name = "agentslab-lab3"
+version = "0.1.0"
+description = "Lab 3: Tool Calling and ReAct"
+requires-python = ">=3.11"
+dependencies = ["openai>=1.68,<3"]
