@@ -54,7 +54,18 @@ def read_tool() -> dict:
     """
     return {
         "type": "function",
-        "function": {"name": "read", "description": ..., "parameters": ...},
+        "function": {
+            "name": "read",
+            "description": (
+                "Read a text file relative to the workspace. "
+                "The offset is 1-based, so offset=1 starts at the first line. "
+                "The result contains next_offset when more content remains; "
+                "call read again with that value until next_offset is null. "
+                "The default offset is 1 and the default limit is 50. "
+                "The limit must be between 1 and 200."
+            ),
+            "parameters": ReadArguments.model_json_schema(),
+        },
     }
 
 
@@ -69,7 +80,18 @@ def write_tool() -> dict:
     """
     return {
         "type": "function",
-        "function": {"name": "write", "description": ..., "parameters": ...},
+        "function": {
+            "name": "write",
+            "description": (
+                "Replace a complete text file relative to the workspace. "
+                "The content must be the complete new file, not a patch. "
+                "Missing parent directories are created automatically. "
+                "Existing files are overwritten, and empty content clears a file. "
+                "The result contains the path and bytes_written. "
+                "Read the complete original file before rewriting it."
+            ),
+            "parameters": WriteArguments.model_json_schema(),
+        },
     }
 
 
@@ -82,7 +104,19 @@ def validate_call(call: dict) -> dict:
     Return the validated object's model_dump() dict, including defaults.
     Let Pydantic ValidationError reach dispatch; do not execute invalid calls.
     """
-    raise NotImplementedError
+    function = call["function"]
+    name = function["name"]
+    arguments = function["arguments"]
+
+    model = ARGUMENT_MODELS.get(name)
+    if model is None:
+        raise ValueError(f"Unknown tool: {name}")
+
+    validated_arguments = model.model_validate_json(arguments)
+
+    return validated_arguments.model_dump()
+
+
 
 
 def resolve_file(root: Path, path: str) -> Path:

@@ -45,7 +45,27 @@ def dispatch(call: dict, root: Path) -> dict:
     subprocess.SubprocessError; return {"error": str(error)}.
     """
 
-    raise NotImplementedError
+    try:
+        arguments = validate_call(call)
+
+        name = call["function"]["name"]
+
+        if name == "bash":
+            return run_bash(root=root, **arguments)
+
+        if name == "read":
+            return read_file(root=root, **arguments)
+
+        if name == "write":
+            return write_file(root=root, **arguments)
+
+        raise ValueError(f"Unknown tool: {name}")
+
+    # ValueError includes Pydantic ValidationError
+    # OSError includes FileNotFoundError, PermissionError, etc.
+    # subprocess.SubprocessError includes TimeoutExpired, CalledProcessError, etc.
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
+        return {"error": str(error)}
 
 
 def run_agent(client, model: str, root: Path, max_calls: int = 8) -> dict:
