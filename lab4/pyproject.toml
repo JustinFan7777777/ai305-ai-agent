@@ -1,0 +1,11 @@
+[[tool.uv.index]]
+name = "sustech"
+url = "https://mirrors.sustech.edu.cn/pypi/web/simple"
+default = true
+
+[project]
+name = "agentslab-lab4"
+version = "0.1.0"
+description = "Lab 4: Tool Design, Schemas, and Execution"
+requires-python = ">=3.11"
+dependencies = ["openai>=1.68,<3", "pydantic>=2.10,<3"]
