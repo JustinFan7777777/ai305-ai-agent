@@ -1,0 +1,11 @@
+.venv/
+.uv-cache/
+.pytest_cache/
+.ruff_cache/
+dist/
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.pilab/
+.pi/

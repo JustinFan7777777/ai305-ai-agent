@@ -1,0 +1,1 @@
+{"id":"budget","prompt":"First run `printf 'intentional command failure\\n' >&2; exit 7` as a standalone command. This failure is intentional; do not suppress it or retry it. Then read README.md, fix budget.py, and run it to check the result. Keep items.json unchanged.","workspace":"../output/workspace"}

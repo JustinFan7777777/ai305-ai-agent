@@ -1,0 +1,5 @@
+[
+  {"name": "Drinks", "quantity": 2, "unit_price_cny": 70},
+  {"name": "Snacks", "quantity": 3, "unit_price_cny": 30},
+  {"name": "Printing", "quantity": 1, "unit_price_cny": 60}
+]

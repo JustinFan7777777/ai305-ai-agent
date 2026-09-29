@@ -48,7 +48,34 @@ def run_bash(command: str, root: Path) -> dict:
     stderr=output_text(error.stderr), exit_code=None, and an error explaining
     the timeout and suggesting inspection of partial output before retrying.
     """
-    raise NotImplementedError
+
+    try:
+        result = subprocess.run(
+            command,
+            shell=True,
+            cwd=root,
+            capture_output=True,
+            text=True,
+            timeout=TIMEOUT_SECONDS,
+            check=False,
+        )
+
+        return {
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "exit_code": result.returncode,
+        }
+
+    except subprocess.TimeoutExpired as error:
+        return {
+            "stdout": output_text(error.stdout),
+            "stderr": output_text(error.stderr),
+            "exit_code": None,
+            "error": (
+                f"Command timed out after {TIMEOUT_SECONDS} seconds. "
+                "Inspect partial output before retrying.",
+            ),
+        }
 
 
 def main() -> None:
