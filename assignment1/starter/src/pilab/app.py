@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
+from pilab_support.execution.sandbox import LocalSandbox
 from pilab_support.llm import LiteLLMBackend
 
 from pilab.core import Agent
@@ -28,5 +29,8 @@ def create_agent(config: AppConfig) -> Agent:
             api_base=config.api_base,
             provider=config.provider,
         ),
+        # The sandbox centralizes workspace path checks and command execution,
+        # so the Agent does not need to duplicate filesystem policy logic.
+        sandbox=LocalSandbox(cwd),
         system_prompt=(f"You are a coding assistant. The current working directory is {cwd}."),
     )
