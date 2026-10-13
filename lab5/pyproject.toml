@@ -1,0 +1,11 @@
+[[tool.uv.index]]
+name = "sustech"
+url = "https://mirrors.sustech.edu.cn/pypi/web/simple"
+default = true
+
+[project]
+name = "agentslab-lab5"
+version = "0.1.0"
+description = "Lab 5: Context Management for Agents"
+requires-python = ">=3.11"
+dependencies = ["openai>=1.68,<3"]
