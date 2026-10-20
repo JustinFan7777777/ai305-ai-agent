@@ -25,16 +25,29 @@ SKILLS = [{
 
 
 def skill_index(skills: list[dict[str, str]]) -> str:
-    # TODO: Return one line per skill with its name, description, and path.
-    # Use metadata only; let the model request the body through read.
-    raise NotImplementedError("skill_index")
+    # 只返回技能的元数据，不提前读取 SKILL.md 正文。
+    # 这样模型必须先从索引中选择技能，再通过 read 工具按需加载说明。
+    lines = [
+        f"- {skill['name']}: {skill['description']} "
+        f"(instructions: {skill['path']})"
+        for skill in skills
+    ]
+    return "\n".join(lines)
 
 
 def skill_instructions(index: str) -> str:
-    # TODO: Return a system-prompt section containing index.
-    # Tell the model to select a relevant skill, read its SKILL.md before working,
-    # and resolve referenced paths relative to that file. Do not preload its body.
-    raise NotImplementedError("skill_instructions")
+    # 将技能索引和加载规则放进 system message。
+    # 路径以 SKILL.md 所在目录为基准，避免模型依赖当前项目的绝对路径。
+    return (
+        "\n\nAVAILABLE SKILLS:\n"
+        f"{index}\n\n"
+        "SKILL USAGE RULES:\n"
+        "1. Select the skill relevant to the user's request.\n"
+        "2. Before doing the work, use the read tool to inspect that skill's SKILL.md.\n"
+        "3. Resolve relative paths mentioned by SKILL.md relative to the directory "
+        "containing that SKILL.md.\n"
+        "4. Do not preload or assume the contents of a skill before reading it.\n"
+    )
 
 
 def main() -> None:

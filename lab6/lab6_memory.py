@@ -18,15 +18,25 @@ MEMORY_PATH = ROOT / "data/writing/AGENTS.md"
 
 
 def load_memory(path: Path) -> str:
-    # TODO: Read the project rules as UTF-8 and return the text.
-    raise NotImplementedError("load_memory")
+    # AGENTS.md 是外部记忆文件；每次运行时重新读取最新内容。
+    return path.read_text(encoding="utf-8")
 
 
 def write_announcement(client, model: str, request: str, memory: str) -> dict:
-    # TODO: Build a system message with SYSTEM and the loaded memory.
-    # Add the user request and call call_model(client, model, messages).
-    # Return its assistant-message dict. Each run starts with no conversation history.
-    raise NotImplementedError("write_announcement")
+    # SYSTEM 定义总体职责，memory 提供项目级写作规则。
+    system_message = (
+        f"{SYSTEM}\n\n"
+        "PROJECT WRITING RULES:\n"
+        f"{memory}"
+    )
+
+    # 每次调用都是新会话，不复用之前的对话历史。
+    messages = [
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": request},
+    ]
+
+    return call_model(client, model, messages)
 
 
 def main() -> None:

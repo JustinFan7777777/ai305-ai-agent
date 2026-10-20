@@ -5,7 +5,20 @@ description: Check an expense CSV for duplicate receipts, missing fields, and th
 
 # Expense check
 
-TODO: Write instructions to read references/check-rules.md and the requested CSV,
-use bash to run scripts/check_expenses.py with the CSV path, and report the results.
-Resolve script paths relative to this SKILL.md; use the runtime's Python command.
-Check the exit code and distinguish the listed total from an approved payment.
+1. Use `read` to inspect `references/check-rules.md`.
+2. Use `read` to inspect the requested expense CSV.
+3. Resolve all paths in this file relative to this `SKILL.md`.
+4. Use `bash` to run the supplied checker with the runtime's Python command:
+
+   ```text
+   python scripts/check_expenses.py <csv-path>
+   ```
+
+5. Inspect the command's JSON output and exit code.
+6. Report:
+   - the number of expense rows;
+   - the listed total;
+   - duplicate receipt IDs and their row numbers;
+   - missing fields and their row numbers.
+7. Distinguish the listed total from an approved reimbursement amount.
+8. Do not delete records, decide which duplicate is valid, approve payments, or modify files.

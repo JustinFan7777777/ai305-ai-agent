@@ -36,24 +36,52 @@ class MessageEntry(BaseModel):
 
 
 def append_message(path: Path, message: dict[str, Any]) -> None:
-    # TODO: Wrap message in MessageEntry and append its JSON plus "\n".
-    # Use path.open("a", encoding="utf-8") and entry.model_dump_json().
-    raise NotImplementedError("append_message")
+    # 包装为带有 type 标记的记录，方便恢复时区分消息记录。
+    entry = MessageEntry(message=message)
+
+    # 使用追加模式，确保不会覆盖已有会话内容。
+    with path.open("a", encoding="utf-8") as file:
+        file.write(entry.model_dump_json() + "\n")
 
 
 def load_session(path: Path) -> tuple[SessionHeader, list[dict[str, Any]]]:
-    # TODO: Read the JSONL lines. Parse the first with SessionHeader.model_validate_json.
-    # Parse the rest with MessageEntry.model_validate_json and collect .message.
-    # Return (header, messages) in saved order. Loading must not call the model.
-    raise NotImplementedError("load_session")
+    # 只读取并校验 JSONL；恢复历史本身不应该调用模型。
+    lines = path.read_text(encoding="utf-8").splitlines()
+
+    if not lines:
+        raise ValueError("Session file is empty.")
+
+    # 第一行是会话头，后续各行是消息记录。
+    header = SessionHeader.model_validate_json(lines[0])
+
+    messages: list[dict[str, Any]] = []
+
+    for line in lines[1:]:
+        if not line.strip():
+            continue
+
+        entry = MessageEntry.model_validate_json(line)
+        messages.append(entry.message)
+
+    return header, messages
 
 
 def continue_session(client, model: str, path: Path, history: list[dict], request: str) -> list[dict]:
-    # TODO: Create a user message from request and save it with append_message.
-    # Build [system message using SYSTEM, *history, user].
-    # Call call_model(client, model, messages), save the reply, and print "ASSISTANT:" and its content.
-    # Return a new list [*history, user, reply] for the next turn; do not store system.
-    raise NotImplementedError("continue_session")
+    # system 只用于本次模型调用，不保存进可恢复的消息历史。
+    user = {"role": "user", "content": request}
+    append_message(path, user)
+
+    messages = [
+        {"role": "system", "content": SYSTEM},
+        *history,
+        user,
+    ]
+
+    reply = call_model(client, model, messages)
+    append_message(path, reply)
+    print("ASSISTANT:", reply.get("content") or "")
+
+    return [*history, user, reply]
 
 
 def main() -> None:
