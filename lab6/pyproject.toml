@@ -1,0 +1,11 @@
+[[tool.uv.index]]
+name = "sustech"
+url = "https://mirrors.sustech.edu.cn/pypi/web/simple"
+default = true
+
+[project]
+name = "agentslab-lab6"
+version = "0.1.0"
+description = "Lab 6: Agent Memory and Skills"
+requires-python = ">=3.11"
+dependencies = ["openai>=1.68,<3", "pydantic>=2.12,<3"]
