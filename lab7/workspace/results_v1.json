@@ -1,0 +1,178 @@
+[
+  {
+    "name": "CLI (default)",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "1: Write outline [open, high]\n2: Read chapter [done, high]\n3: Review notes [open, low]\n4: Submit report [done, medium]\n5: Practice demo [open, medium]\n6: Archive drafts [done, low]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "1: Write outline [open, high]\n2: Read chapter [done, high]\n3: Review notes [open, low]\n4: Submit report [done, medium]\n5: Practice demo [open, medium]\n6: Archive drafts [done, low]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --status done",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "2: Read chapter [done, high]\n4: Submit report [done, medium]\n6: Archive drafts [done, low]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "2: Read chapter [done, high]\n4: Submit report [done, medium]\n6: Archive drafts [done, low]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --status open",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "1: Write outline [open, high]\n3: Review notes [open, low]\n5: Practice demo [open, medium]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "1: Write outline [open, high]\n3: Review notes [open, low]\n5: Practice demo [open, medium]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --priority high",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "1: Write outline [open, high]\n2: Read chapter [done, high]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "1: Write outline [open, high]\n2: Read chapter [done, high]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --priority medium",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "4: Submit report [done, medium]\n5: Practice demo [open, medium]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "4: Submit report [done, medium]\n5: Practice demo [open, medium]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --priority low",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "3: Review notes [open, low]\n6: Archive drafts [done, low]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "3: Review notes [open, low]\n6: Archive drafts [done, low]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --status done --priority high",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "2: Read chapter [done, high]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "2: Read chapter [done, high]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --priority low --status open",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "3: Review notes [open, low]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "3: Review notes [open, low]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --status unknown",
+    "expected": "nonzero exit, readable stderr, no traceback",
+    "actual": {
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "usage: todo_cli.py [-h] [--status {open,done}] [--priority {low,medium,high}]\ntodo_cli.py: error: argument --status: invalid choice: 'unknown' (choose from 'open', 'done')\n"
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --priority urgent",
+    "expected": "nonzero exit, readable stderr, no traceback",
+    "actual": {
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "usage: todo_cli.py [-h] [--status {open,done}] [--priority {low,medium,high}]\ntodo_cli.py: error: argument --priority: invalid choice: 'urgent' (choose from 'low', 'medium', 'high')\n"
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI --unknown",
+    "expected": "nonzero exit, readable stderr, no traceback",
+    "actual": {
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "usage: todo_cli.py [-h] [--status {open,done}] [--priority {low,medium,high}]\ntodo_cli.py: error: unrecognized arguments: --unknown\n"
+    },
+    "passed": true
+  },
+  {
+    "name": "API filters, invalid options, empty result, input unchanged",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "[[11, 12], [11], [11], [], \"ValueError\", \"ValueError\"]\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "[[11, 12], [11], [11], [], \"ValueError\", \"ValueError\"]\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "CLI empty task list",
+    "expected": {
+      "exit_code": 0,
+      "stdout": "No tasks.\n",
+      "stderr": ""
+    },
+    "actual": {
+      "exit_code": 0,
+      "stdout": "No tasks.\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  {
+    "name": "tasks.json unchanged",
+    "expected": true,
+    "actual": true,
+    "passed": true
+  }
+]
