@@ -1,0 +1,8 @@
+[
+  {"id": 1, "title": "Write outline", "status": "open", "priority": "high"},
+  {"id": 2, "title": "Read chapter", "status": "done", "priority": "high"},
+  {"id": 3, "title": "Review notes", "status": "open", "priority": "low"},
+  {"id": 4, "title": "Submit report", "status": "done", "priority": "medium"},
+  {"id": 5, "title": "Practice demo", "status": "open", "priority": "medium"},
+  {"id": 6, "title": "Archive drafts", "status": "done", "priority": "low"}
+]

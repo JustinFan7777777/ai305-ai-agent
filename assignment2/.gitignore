@@ -1,0 +1,20 @@
+# Local execution artifacts and credentials
+/output/
+/dist/
+**/.pilab/
+.env
+.env.*
+*.env
+*.log
+.ruff_cache/
+.uv-cache/
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Course handouts and the historical reference checkout stay local.
+*.pdf
+*.zip
+*.tar.gz
+/assignment1-reference/
